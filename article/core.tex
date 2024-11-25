@@ -3,10 +3,10 @@
 \section*{Introdução}
 
 Esse projeto tem como propósito a produção de um material didático
-sobre sistemas de recomendação sequenciais. O objetivo é apresentar
-uma visão geral sobre o assunto, enquanto apresentamos uma abordagem
-de implementação de sistemas de recomendação sequenciais baseada em
-redes neurais de atenção.
+sobre sistemas de recomendação sequenciais.
+O objetivo é apresentar uma visão geral sobre o assunto, enquanto
+apresentamos uma abordagem de implementação de sistemas de recomendação
+sequenciais baseada em  redes neurais de atenção.
 
 \section*{Metodologia}
 
@@ -22,7 +22,7 @@ do site \url{last.fm} disponível em \citeurl{lastfm_dataset}
 
 Esse dataset de 2010 apresenta o histórico de reprodução de músicas
 de uma amostra de 1.000 usuários. Pela natureza do \url{last.fm},
-cada usuário tem em média aproximidamente 20 mil reproduções de músicas,
+cada usuário tem em média aproximadamente 20 mil reproduções de músicas,
 resultando em um total de aproximadamente 19 milhões de reproduções
 de músicas no dataset.
 
@@ -32,12 +32,12 @@ si apresenta constítui boa parte do material e explicações.
 
 Além disso, foi produzida uma vídeo aula explicativa sobre sistemas de
 % TODO: Adicionar link
-recomendação sequenciais disponível em \url{https://youtu.be/3-4-5-6},
-com o objetivo de dar uma breve introdução ao assunto e apresentar as
-implementações feitas neste projeto.
+recomendação sequencial disponível em \url{https://youtu.be/3-4-5-6},
+para dar uma breve introdução ao assunto e apresentar as implementações
+feitas neste projeto.
 
 Esse material então foi enviado para algumas pessoal que atuam com 
-conhecimento técnino na área de computação junto a um formulário de
+conhecimento técnico na área de computação junto a um formulário de
 avaliação de projeto para medir a qualidade do trabalho produzido.
 
 \section*{Implementação}
@@ -50,7 +50,7 @@ mapeamento dos UUIDs (universally unique identifier) para inteiros
 sequenciais a partir do 1, já que necessitamos de representações
 numéricas para os algoritmos.
 
-Além disso, devido a natureza do \url{last.fm}, cada usuário tem
+Além disso, devido à natureza do \url{last.fm}, cada usuário tem
 um volume extenso de reproduções de músicas. Entendemos que esse
 histórico extenso pode ser dívido em "sessões de reprodução", 
 isto é, um conjunto de reproduções de músicas que ocorrem de 
@@ -72,7 +72,7 @@ atenção.
 
 Esse modelo lançado em 2018 foi um dos primeiros algoritmos de
 recomendação sequencial baseado nas redes neurais de atenção, sendo
-lançado bem pŕoximo ao artigo \citetitle{attetionisallyouneed} \cite{attetionisallyouneed}
+lançado bem próximo ao artigo \citetitle{attetionisallyouneed} \cite{attetionisallyouneed}
 trazendo essa ideia para o campo de sistemas de recomendação sequenciais.
 
 \begin{figure}[H]
@@ -90,15 +90,15 @@ PyTorch do modelo dos autores originais implementado em TensorFlow.
 Nessa adaptação, não fizemos mudanças diretas na arquitetura do
 modelo, mas apenas algumas adaptações de código para melhorar a
 legibilidade e marginalmente o desempenho. Além disso, desviamos
-da implementação original nos parâmetros escolhisdos, otimizador
+da implementação original nos parâmetros escolhidos, otimizador
 e outras configurações.
 
 A versão final do modelo foi treinada com uma amostra aleatória
 de 100 mil sessões para reduzir o tempo de treinamento ao custo
-de uma perda potecialmente pequena de qualidade. Além disso,
+de uma perda potencialmente pequena de qualidade. Além disso,
 para a divisão dos dados, fizemos uma divisão de treino, teste
 e validação pela estratégia sugerida pelos autores de truncamento
-das sessões, isto é, todas as divisões contêm todas sessões,
+das sessões, isto é, todas as divisões contêm todas as sessões,
 sendo que na divisão de treino é descartada os dois últimos itens
 da sessão, na de validação o último item da sessão e na de teste
 é mantida a sessão inteira. Como nosso volume de dados era
