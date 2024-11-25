@@ -1,4 +1,4 @@
-\documentclass[11pt,oneside,a4paper,article,brazil,chapter=title]{article}
+\documentclass[11pt,oneside,a4paper]{article}
 \usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage[brazil,english]{babel}
 \usepackage[utf8]{inputenc}
@@ -13,21 +13,25 @@
 \usepackage{indentfirst}
 \usepackage{url}
 \usepackage{pdflscape}
+\usepackage{biblatex}
 
 \usepackage{hyperref}
 \hypersetup{
 colorlinks=true,
-linkcolor=black,
-citecolor=black,
-urlcolor=black
+linkcolor=magenta,
+citecolor=magenta,
+urlcolor=magenta
 }
 
-\title{Sistemas de Recomendação}
+\addbibresource{refs.bib}
+
+
+\title{Sistemas de Recomendação\\\large{Material Didático sobre Sistemas de Recomendação Sequenciais}}
 \author{
     Gustavo Wadas Lopes - 1274540\\
     Lívia Lelis - 12543822\\
 }
-\date{11/2024}
+\date{Novembro de 2024\\ICMC/USP}
 
 \begin{document}
 
@@ -35,9 +39,8 @@ urlcolor=black
 
 \maketitle
 
+\input{core}
 
-\newpage
-
-% \bibliography{refs}
+\printbibliography
 
 \end{document}
