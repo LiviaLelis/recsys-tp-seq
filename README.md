@@ -3,9 +3,11 @@
 Nesse repositório apresentamos um breve material didático sobre sistemas de
 recomendação sequenciais. O objetivo é apresentar uma visão geral sobre o
 assunto, enquanto apresentamos uma abordagem de implementação de sistemas de
-recomendação sequenciais baseada em redes neurais de atenção.
+recomendação sequenciais baseada em redes neurais de atenção e um modelo de
+fatoração de matrizes com cadeias de Markov.
 
-O conteúdo e implementação do material estão disponíveis em [SASRec.ipynb](./SASRec.ipynb).
+O conteúdo e implementação do material estão disponíveis em
+[SASRec.ipynb](./SASRec.ipynb) e [FPMC.ipynb](./FPMC.ipynb).
 
 ## Obtenção do conjunto de dados
 
