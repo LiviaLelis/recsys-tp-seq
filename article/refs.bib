@@ -71,3 +71,21 @@
   primaryClass={cs.LG},
   url={https://arxiv.org/abs/1711.05101}, 
 }
+
+@inproceedings{fpmc,
+author = {Rendle, Steffen and Freudenthaler, Christoph and Schmidt-Thieme, Lars},
+title = {Factorizing personalized Markov chains for next-basket recommendation},
+year = {2010},
+isbn = {9781605587998},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1772690.1772773},
+doi = {10.1145/1772690.1772773},
+abstract = {Recommender systems are an important component of many websites. Two of the most popular approaches are based on matrix factorization (MF) and Markov chains (MC). MF methods learn the general taste of a user by factorizing the matrix over observed user-item preferences. On the other hand, MC methods model sequential behavior by learning a transition graph over items that is used to predict the next action based on the recent actions of a user. In this paper, we present a method bringing both approaches together. Our method is based on personalized transition graphs over underlying Markov chains. That means for each user an own transition matrix is learned - thus in total the method uses a transition cube. As the observations for estimating the transitions are usually very limited, our method factorizes the transition cube with a pairwise interaction model which is a special case of the Tucker Decomposition. We show that our factorized personalized MC (FPMC) model subsumes both a common Markov chain and the normal matrix factorization model. For learning the model parameters, we introduce an adaption of the Bayesian Personalized Ranking (BPR) framework for sequential basket data. Empirically, we show that our FPMC model outperforms both the common matrix factorization and the unpersonalized MC model both learned with and without factorization.},
+booktitle = {Proceedings of the 19th International Conference on World Wide Web},
+pages = {811–820},
+numpages = {10},
+keywords = {matrix factorization, markov chain, basket recommendation},
+location = {Raleigh, North Carolina, USA},
+series = {WWW '10}
+}

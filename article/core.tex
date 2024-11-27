@@ -6,15 +6,22 @@ Esse projeto tem como propósito a produção de um material didático
 sobre sistemas de recomendação sequenciais.
 O objetivo é apresentar uma visão geral sobre o assunto, enquanto
 apresentamos uma abordagem de implementação de sistemas de recomendação
-sequenciais baseada em  redes neurais de atenção.
+sequenciais baseada em  redes neurais de atenção e um modelo baseado em 
+fatoração de matrizes com cadeias de Markov.
 
 \section*{Metodologia}
 
-Para esse projeto, iremos utilizar o algoritmo de recomendação
-\textit{Self-Attentive Sequential Recommendation (SASRec)} \cite{sasrec}.
-Esse algoritmo proposto por Wang-Cheng Kang e Julian McAuley em 2018
+Para esse projeto, iremos utilizar dois algoritmos de recomendação:
+o \textit{Self-Attentive Sequential Recommendation (SASRec)} \cite{sasrec} e
+o \textit{Factorizing Personalized Markov Chains (FPMC)} \cite{fpmc}.
+O SASRec é um algoritmo proposto por Wang-Cheng Kang e Julian McAuley em 2018
 consiste em uma rede neural de atenção que é treinada para prever o
-próximo item a ser recomendado em uma recomendação sequencial.
+próximo item a ser recomendado em uma recomendação sequencial. Já o FPMC é
+um algoritmo proposto por Rendle, Freudenthaler e Schmidt-Thieme em 2010
+e consiste de uma abordagem híbrida baseando-se na ideia de fatoração de 
+matrizes e cadeias de markov junto a técnica BPR (Bayesian Personalized Ranking)
+para prever a próxima "cesta" (uma única música no nosso contexto) a ser 
+recomendada a partir da "cesta" anterior.
 
 Além disso, iremos utilizar o dataset de reproduções de músicas
 do site \url{last.fm} disponível em \citeurl{lastfm_dataset}
@@ -26,9 +33,10 @@ cada usuário tem em média aproximadamente 20 mil reproduções de músicas,
 resultando em um total de aproximadamente 19 milhões de reproduções
 de músicas no dataset.
 
-Produzimos um notebook disponível em \url{https://github.com/LiviaLelis/recsys-tp-seq},
-junto ao material textual do projeto e instruções de uso. O notebook em
-si apresenta constítui boa parte do material e explicações.
+Produzimos dois notebooks disponíveis em
+\url{https://github.com/LiviaLelis/recsys-tp-seq}, junto ao material textual do
+projeto e instruções de uso. Todo o material e explicações estão disponíveis
+pelos próprios notebooks.
 
 Além disso, foi produzida uma vídeo aula explicativa sobre sistemas de
 % TODO: Adicionar link
@@ -66,14 +74,11 @@ essa assunção é verdadeira.
 
 \subsection*{Modelo de Atenção}
 
-Como mencionado anteriormente, para o modelo de atenção, utilizamos
-o \citename{sasrec}. Esse modelo é baseado em uma rede neural de
-atenção.
-
-Esse modelo lançado em 2018 foi um dos primeiros algoritmos de
-recomendação sequencial baseado nas redes neurais de atenção, sendo
-lançado bem próximo ao artigo \citetitle{attetionisallyouneed} \cite{attetionisallyouneed}
-trazendo essa ideia para o campo de sistemas de recomendação sequenciais.
+O SASRec \cite{sasrec} é um modelo lançado em 2018 e foi um dos primeiros 
+algoritmos de recomendação sequencial baseado na técnica de \textit{self-attention}
+introduzida introduzida no artigo \citetitle{attetionisallyouneed} 
+\cite{attetionisallyouneed}, sendo o SASRec um dos pioneiros trazendo essa ideia
+para o campo de sistemas de recomendação sequenciais.
 
 \begin{figure}[H]
     \centering
@@ -82,16 +87,12 @@ trazendo essa ideia para o campo de sistemas de recomendação sequenciais.
     \label{fig:sasrec-diagram}
 \end{figure}
 
-Como podemos ver na figura \ref{fig:sasrec-diagram}, o modelo SASRec
-é bastante semelhante a outros modelos de atenção.
-
 Nossa implementação é baseada em uma adaptação \cite{seanswyi} em
 PyTorch do modelo dos autores originais implementado em TensorFlow.
 Nessa adaptação, não fizemos mudanças diretas na arquitetura do
 modelo, mas apenas algumas adaptações de código para melhorar a
-legibilidade e marginalmente o desempenho. Além disso, desviamos
-da implementação original nos parâmetros escolhidos, otimizador
-e outras configurações.
+legibilidade e o desempenho. Além disso, desviamos da implementação original 
+nos parâmetros escolhidos, otimizador e outras configurações.
 
 A versão final do modelo foi treinada com uma amostra aleatória
 de 100 mil sessões para reduzir o tempo de treinamento ao custo
@@ -106,8 +107,8 @@ suficientemente grande, acreditamos que poderíamos obter resultados
 mais realistas se seguíssemos uma divisão por meio das sessões em
 si ao invés deste truncamento.
 
-Além disso, para melhorar a performance do modelo, mantívemos a
-estratégia original de construção de amostras negativas, isto é,
+Além disso, para melhorar a performance do modelo e viabilizar o treinamento,
+é adotada a estratégia original de construção de amostras negativas, isto é,
 geramos para cada item um conjunto de itens negativos para que o
 treinamento seja mais eficiente, realizando uma classificação
 binária de se o item é positivo ou negativo.
@@ -116,58 +117,71 @@ A função de perda utilizada para avaliar o modelo foi a
 \textit{Binary Cross Entropy with Logits}, que é uma função de perda
 para classificação binária. Além disso fizemos uso do algoritmo
 de otimização AdamW \cite{adamw} com o parâmetro de learning rate
-controlado por um \textit{scheduler OneCycleLR} \cite{onecyclelr}.
+fixo. Também fizemos experimentos com o \textit{scheduler OneCycleLR} 
+\cite{onecyclelr} que apresentou resultados bem semelhantes, por isso
+seguimos com a learning rate fixa para deixar os resultados mais comparáveis.
 
 Mais informações sobre os parâmetros escolhidos podem ser vistas
 no repositório do projeto disponível em \url{https://github.com/LiviaLelis/recsys-tp-seq}.
 
-% Os parâmetros escolhidos para o modelo são:
-%
-% \begin{itemize}
-%     \item \textit{batch size}: 512
-%     \item \textit{max sequence length}: 50
-%     \item \textit{dropout probability}: 0.4
-%     \item \textit{hidden dimension}: 64
-%     \item \textit{attention heads}: 2
-%     \item \textit{epochs}: 500
-%     \item \textit{AdamW beta 1}: 0.9
-%     \item \textit{AdamW beta 2}: 0.999
-%     \item \textit{AdamW epsilon}: 1e-8
-%     \item \textit{AdamW weight decay}: 0.01
-%     \item \textit{OneCycleLR warmup}: 5\%
-%     \item \textit{OneCycleLR max learning rate}: 0.04
-%     \item \textit{OneCycleLR annealing}: linear
-% \end{itemize}
+\subsection{FPMC}
 
-Após 3 hora e 50 minutos de treinamento em uma RTX 3080TI, obtivemos
-os seguintes resultados:
-
-\begin{itemize}
-  \item \textbf{NDCG@10 Validação}: 0.681
-  \item \textbf{HIT@10 Validação}: 0.777
-  \item \textbf{NDCG@10 Teste}: 0.653
-  \item \textbf{HIT@10 Teste}: 0.749
-\end{itemize}
-
-O modelo nesse período parece não ter convergido, provavelmente
-conseguindo atingir resultados ainda melhores com um tempo de
-treinamento maior.
+O FPMC \cite{fpmc} é um modelo lançado em 2010 que combina a técnica de 
+fatoração de matrizes (usando BPR) com a técnica de cadeias de Markov.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{../assets/validation-ndcg.png}
-    \caption{Gráfico da métrica NDCG@10 na validação durante treinamento}
+    \includegraphics[width=0.6\textwidth]{../assets/fpmc-diagram.png}
+    \caption{Diagrama da arquitetura do modelo FPMC \cite{fpmc}}
+    \label{fig:fpmc-diagram}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.6\textwidth]{../assets/validation-hit.png}
-  \caption{Gráfico da métrica HIT@10 na validação durante treinamento}
-\end{figure}
+A implementação do modelo FPMC é bem simples, se diferenciando principalmente
+pelo uso da BPR como função de perda. Além disso, a estrutura dos dados
+consumidos pelo modelo é distinta, tomando como entrada uma lista de tuplas
+do tipo (usuário, item anterior, próximo item real, próximo item negativo 
+[gerado no dataset]), ou seja, diferentemente do modelo SASRec, o usuário é
+levado em consideração, mas, ao invés de tomar como entrada uma lista de 
+itens, recebe apenas o item anterior.
 
-Os resultados obtidos são bastante interessantes, estando comparáveis
-aos resultados obtidos para outros conjuntos de dados no artigo original
-\cite{srssbrs}.
+\section*{Resultados}
+
+A fim de melhor comparar os dois modelos, optamos por em ambos utilizar a mesma
+amostra de 100k sessões para reduzir o tempo de treinamento ao custo de uma
+redução na qualidade da base de dados. Além disso, as condições de treinamento
+foram definidas mantendo parâmetros semelhantes: ambos com um \textit{batch size}
+de 1024 e sem scheduler. Além disso, foi selecionado um número de epochs para 
+manter ambos tempos de treinamento próximos (aproximadamente 40 minutos em uma
+RTX 3080TI).
+
+% Criar uma tabela onde as colunas são o modelo e as linhas as métricas
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Modelo & NDCG@10 & HIT@10 \\ \hline
+        SASRec & 0.6757 & 0.7704 \\ \hline
+        FPMC & 0.6733 & 0.7437 \\ \hline
+    \end{tabular}
+    \caption{Métricas de qualidade do SASRec e FPMC nos dados de teste}
+    \label{tab:results}
+\end{table}
+
+Ambos os modelos apresentam resultados muito parecidos, com o SASRec tomando uma
+leve margem de melhoria. Ambos os modelos ainda apresentam potencial de melhoria
+já que nenhum deles paracia ter convergido completamente durante o treinamento,
+além da possibilidade de tunar os hiperparâmetros de treinamento.
+
+Desse modo, não é possível declarar um modelo como claramente superior ao outro,
+porém o FPMC costuma ser menos custoso e convergir mais rapidamente que o SASRec,
+sendo uma boa alternativa para situações onde é necessário reduzir o custo de
+treinamento ao mesmo tempo que se mantém um bom resultado.
+
+No artigo original do modelo SASRec \cite{sasrec}, ele supera o FPMC em
+todos os datasets utilizados (que não incluem o utilizado aqui), mas também em
+uma margem de melhoria moderada (mas mais significativa do que as apresentadas
+aqui).
 
 \section*{Avaliação do material}
 
