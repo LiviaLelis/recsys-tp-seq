@@ -39,14 +39,13 @@ projeto e instruções de uso. Todo o material e explicações estão disponíve
 pelos próprios notebooks.
 
 Além disso, foi produzida uma vídeo aula explicativa sobre sistemas de
-% TODO: Adicionar link
-recomendação sequencial disponível em \url{https://youtu.be/3-4-5-6},
+recomendação sequencial disponível em \url{https://www.youtube.com/watch?v=rnXUyPji_-o},
 para dar uma breve introdução ao assunto e apresentar as implementações
 feitas neste projeto.
 
-Esse material então foi enviado para algumas pessoal que atuam com 
-conhecimento técnico na área de computação junto a um formulário de
-avaliação de projeto para medir a qualidade do trabalho produzido.
+O público-alvo deste material é principalmente pessoas que atuem na área de
+computação, com conhecimento técnico e interesse em aprender sobre sistemas de
+recomendação, aprendizado de máquina e aplicações práticas.
 
 \section*{Implementação}
 
@@ -124,7 +123,7 @@ seguimos com a learning rate fixa para deixar os resultados mais comparáveis.
 Mais informações sobre os parâmetros escolhidos podem ser vistas
 no repositório do projeto disponível em \url{https://github.com/LiviaLelis/recsys-tp-seq}.
 
-\subsection{FPMC}
+\subsection*{FPMC}
 
 O FPMC \cite{fpmc} é um modelo lançado em 2010 que combina a técnica de 
 fatoração de matrizes (usando BPR) com a técnica de cadeias de Markov.
@@ -136,12 +135,19 @@ fatoração de matrizes (usando BPR) com a técnica de cadeias de Markov.
     \label{fig:fpmc-diagram}
 \end{figure}
 
-A implementação do modelo FPMC é bem simples, se diferenciando principalmente
-pelo uso da BPR como função de perda. Além disso, a estrutura dos dados
-consumidos pelo modelo é distinta, tomando como entrada uma lista de tuplas
-do tipo (usuário, item anterior, próximo item real, próximo item negativo 
+A implementação do modelo FPMC é comparativamente simples, sendo construído a
+partir da combinação de duas componentes: a fatoração matricial representando
+as preferências dos usuários e características dos itens por meio de vetores
+latentes; e a cadeia de Markov que modela as dependências sequenciais entre
+itens consecutivos. O modelo é treinado por meio da abordagem BPR (Bayesian
+Personalized Ranking), que é uma técnica de aprendizado de ranking muito
+utilizada para otimizar modelos baseados em vetores latentes (como fatoração
+de matricial isoladamente).
+
+Além disso, a estrutura dos dados consumidos pelo modelo consiste de tuplas do
+tipo (usuário, item anterior, próximo item real, próximo item negativo
 [gerado no dataset]), ou seja, diferentemente do modelo SASRec, o usuário é
-levado em consideração, mas, ao invés de tomar como entrada uma lista de 
+levado em consideração, mas, ao invés de tomar como entrada uma sequência de
 itens, recebe apenas o item anterior.
 
 \section*{Resultados}
@@ -158,7 +164,7 @@ RTX 3080TI).
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|c|c|c|c|}
+    \begin{tabular}{|c|c|c|}
         \hline
         Modelo & NDCG@10 & HIT@10 \\ \hline
         SASRec & 0.6757 & 0.7704 \\ \hline
@@ -185,4 +191,25 @@ aqui).
 
 \section*{Avaliação do material}
 
-TODO :)
+Para a avaliação do material foi utilizado o \textit{Google Forms} seguindo
+o formato sugerido na ''Regulamentação da Curricularização da Extensão na
+Universidade de São Paulo``. O formulário juntamente ao material em vídeo e o
+repositório foram enviados para um grupo de ex-alunos e alunos da área de 
+computação sem vínculo ativo ou anterior à Universidade de São Paulo, para 
+coleta de feedbacks sobre o material e a atividade extensionista.
+
+Algumas das perguntas necessárias não fazem muito sentido para o projeto,
+entretanto o feedback geral foi positivo, por mais que o número de participantes
+tenha sido bem pequeno, tendo apenas 4 respostas.
+
+\begin{center}
+    \makebox[0cm]{
+        \begin{tabular}{|c|c|}
+            \hline
+            \includegraphics[width=80mm]{../assets/form-results/part-1.png} & \includegraphics[width=80mm]{../assets/form-results/part-2.png} \\ \hline
+            \includegraphics[width=80mm]{../assets/form-results/part-3.png} & \includegraphics[width=80mm]{../assets/form-results/part-4.png} \\ \hline
+            \includegraphics[width=80mm]{../assets/form-results/part-5.png} & \includegraphics[width=80mm]{../assets/form-results/part-6.png} \\ \hline
+            \includegraphics[width=80mm]{../assets/form-results/part-7.png} & \includegraphics[width=80mm]{../assets/form-results/part-8.png} \\ \hline
+        \end{tabular}
+    }
+\end{center}
